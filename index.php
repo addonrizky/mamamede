@@ -18,16 +18,8 @@
            <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>  
            <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>            
            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />  
-
-           <script type = "text/JavaScript">
-               <!--
-                    function AutoRefresh( t ) {
-                         setTimeout("location.reload(true);", t);
-                    }
-               //-->
-          </script>
       </head>  
-      <body onload="JavaScript:AutoRefresh(60000);">  
+      <body>  
            <br /><br />  
            <div class="container">  
                 <h3 align="center"><img src="images/cemalcemil.jpeg" width="150px"/>Daftar Harga Mamamede</h3>  
