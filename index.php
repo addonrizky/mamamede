@@ -121,7 +121,7 @@
                       if(type === 'display'){
                          var abbr = "Rp"             
                          var num = $.fn.dataTable.render.number('.', ',', 2).display(data);              
-                         return abbr  + ' ' + num ;           
+                         return "<b>" + abbr  + ' ' + num + "</br>";           
                       } else {           
                          return data;
                       }
