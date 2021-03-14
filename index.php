@@ -30,7 +30,7 @@
       <body onload="JavaScript:AutoRefresh(60000);">  
            <br /><br />  
            <div class="container">  
-                <h3 align="center"><img src="images/cemalcemil.jpeg" width="200px"/>Daftar Harga Mamamede</h3>  
+                <h3 align="center"><img src="images/cemalcemil.jpeg" width="150px"/>Daftar Harga Mamamede</h3>  
                 <br />  
                 <div class="table-responsive">  
                      <table id="kacang_data" class="table table-striped table-bordered">  
