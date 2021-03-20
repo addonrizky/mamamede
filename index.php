@@ -44,7 +44,7 @@
                             echo "<td>" . $row["product_code"] . "</td>";
                             echo "<td>" . $row["product_name"] . "</td>";
                             echo "<td width='20%'>" . $row["product_code"] . "</td>";
-                            echo "<td>" . $row["price"] . "</td>";
+                            echo "<td>" . $row["price_to_customer"] . "</td>";
                             echo "</tr>";	
                           }  
                           ?>  
@@ -91,17 +91,16 @@
                }
           ],
           "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-               console.log(aData['Field1'])
                $(nRow).attr('id', aData['Field1']);
           }
      });   
      
      $('#kacang_data').on( 'click', 'tbody tr td:last-child b', function (e) {
+          /*
           e.preventDefault()
           let id = $(this).parent().parent().attr('id')
           let harga = trimRupiahFormat($(this).text())
           harga = harga.substring(0,harga.length-2)
-          console.log($(this).parent().parent().attr('id'))
           let input = document.createElement('input');
           input.setAttribute('type', 'text')
           input.setAttribute('onchange', 'check('+id+','+harga+')')
@@ -109,6 +108,7 @@
           input.id = "harga_"
           $(this).parent().append(input)
           $(this).remove()
+          */
      });
 
      function trimRupiahFormat(rupiah_format){
@@ -130,7 +130,6 @@ function check(id, harga){
                harga: new_harga 
           },
           function(response) {
-               console.log(response)
                let harga_text = document.createElement('b');
                harga_text.innerHTML = formatMoney(new_harga);
                $(trobject).parent().append(harga_text)
