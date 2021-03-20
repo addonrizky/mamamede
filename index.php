@@ -53,75 +53,107 @@
            </div>  
       </body>  
  </html> 
-
-<?php
-     function beautify_numeric($numeric){
-          $digit = strlen((string)abs(intval($numeric)));
-          $one_million = 1000000;
-          $one_billion = 1000000000;
-          $one_trillion = 1000000000000;
-          $result = intval($numeric);
-          //length > 7 && length <= 9 ----> M
-          if( $digit > 7 && $digit <= 9){
-               $raw_result = round($numeric / $one_million, 2);
-               $result = $raw_result . " M";
-          }
-          
-          //length > 9 && length <= 12 ----> B
-          if( $digit > 9 && $digit <= 12){
-               $raw_result = round($numeric / $one_billion, 2);
-               $result = $raw_result . " B";
-          }
-
-          //length > 12 && length <= 15 ----> T
-          if( $digit > 12 && $digit <= 15){
-               $raw_result = round($numeric / $one_trillion, 2);
-               $result = $raw_result . " T";
-          }
-
-          return $result;
-     }
-?>
  <script>  
  $(document).ready(function(){  
-    $('#kacang_data').DataTable({
+     var kacang_table = $('#kacang_data').DataTable({
           paging: true,
           "order": [[ 0, "asc" ]],
           columns : [
-              {
-                  data: "Field1",
-                  
-              },
-              {
-                  data: "Field2",
-                  
-              },
-              {
-                  data: "Field3",
-                  
-              },
-              {
-                  data: "Field35",
-                  render: function (data) {
-                      return '<img src="images/mede.jpeg" width="100px" />';
-                  }
-                  
-              },
-              {
-                  data: "Field4",
-                  render: function (data, type, row, meta) {
-                      if(type === 'display'){
-                         var abbr = "Rp"             
-                         var num = $.fn.dataTable.render.number('.', ',', 2).display(data);              
-                         return "<b>" + abbr  + ' ' + num + "</br>";           
-                      } else {           
-                         return data;
-                      }
-                  },
-              },
-          ]
-    });  
+               {
+                    data: "Field1",
+               },
+               {
+                    data: "Field2",
+
+               },
+               {
+                    data: "Field3",
+
+               },
+               {
+                    data: "Field35",
+                    render: function (data) {
+                         return '<img src="images/mede.jpeg" width="100px" />';
+                    }
+
+               },
+               {
+                    data: "Field4",
+                    render: function (data, type, row, meta) {
+                         if(type === 'display'){
+                              var abbr = "Rp"             
+                              var num = $.fn.dataTable.render.number('.', ',', 2).display(data);              
+                              return "<b>" + abbr  + ' ' + num + "</br>";           
+                         } else {           
+                              return data;
+                         }
+                    },
+               }
+          ],
+          "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+               console.log(aData['Field1'])
+               $(nRow).attr('id', aData['Field1']);
+          }
+     });   
+     
+     $('#kacang_data').on( 'click', 'tbody tr td:last-child b', function (e) {
+          e.preventDefault()
+          let id = $(this).parent().parent().attr('id')
+          let harga = trimRupiahFormat($(this).text())
+          harga = harga.substring(0,harga.length-2)
+          console.log($(this).parent().parent().attr('id'))
+          let input = document.createElement('input');
+          input.setAttribute('type', 'text')
+          input.setAttribute('onchange', 'check('+id+','+harga+')')
+          input.setAttribute('value', harga)
+          input.id = "harga_"
+          $(this).parent().append(input)
+          $(this).remove()
+     });
+
+     function trimRupiahFormat(rupiah_format){
+          let number_format = rupiah_format.replace("Rp", "").replace(".", "").replace(",","");
+          return number_format
+     }
+     
  });  
+
+function check(id, harga){
+     let trobject = $('tr#'+id+" td:last-child input");
+     let new_harga = $(trobject).val()
+
+
+     $.post( 
+          "edit_harga.php", 
+          { 
+               id: id, 
+               harga: new_harga 
+          },
+          function(response) {
+               console.log(response)
+               let harga_text = document.createElement('b');
+               harga_text.innerHTML = formatMoney(new_harga);
+               $(trobject).parent().append(harga_text)
+               $(trobject).remove()
+          }
+     );
+}
+
+function formatMoney(amount, decimalCount = 2, decimal = ",", thousands = ".") {
+  try {
+    decimalCount = Math.abs(decimalCount);
+    decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+
+    const negativeSign = amount < 0 ? "-" : "";
+
+    let i = parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decimalCount)).toString();
+    let j = (i.length > 3) ? i.length % 3 : 0;
+
+    return "Rp " + negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) + (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
+  } catch (e) {
+    console.log(e)
+  }
+};
  </script> 
 
 
